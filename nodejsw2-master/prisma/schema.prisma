@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model basket_items {
+  id         Int       @id @default(autoincrement())
+  count      Int       @default(1)
+  user_id    Int
+  product_id Int
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+  products   products  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model product_features {
+  id         Int       @id @default(autoincrement())
+  icon       String
+  title      String
+  value      String
+  product_id Int
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+  products   products  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model product_filter_items {
+  id                Int             @id @default(autoincrement())
+  title             String
+  product_filter_id Int
+  created_at        DateTime        @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?       @db.Timestamp(6)
+  product_filters   product_filters @relation(fields: [product_filter_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products          products[]
+}
+
+model product_filters {
+  id                   Int                    @id @default(autoincrement())
+  title                String
+  type_id              Int
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?              @db.Timestamp(6)
+  product_filter_items product_filter_items[]
+  product_types        product_types          @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model product_images {
+  id         Int       @id @default(autoincrement())
+  src        String
+  product_id Int
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+  products   products  @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model product_types {
+  id              Int               @id @default(autoincrement())
+  title           String
+  created_at      DateTime          @default(now()) @db.Timestamp(6)
+  updated_at      DateTime?         @db.Timestamp(6)
+  product_filters product_filters[]
+  products        products[]
+}
+
+model products {
+  id                   Int                  @id @default(autoincrement())
+  title                String
+  price                Float
+  old_price            Float?
+  description          String
+  type_id              Int
+  filter_item_id       Int
+  created_at           DateTime             @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?            @db.Timestamp(6)
+  basket_items         basket_items[]
+  product_features     product_features[]
+  product_images       product_images[]
+  product_filter_items product_filter_items @relation(fields: [filter_item_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product_types        product_types        @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id           Int            @id @default(autoincrement())
+  login        String
+  email        String
+  phone        String
+  password     String
+  created_at   DateTime       @default(now()) @db.Timestamp(6)
+  updated_at   DateTime?      @db.Timestamp(6)
+  basket_items basket_items[]
+}
