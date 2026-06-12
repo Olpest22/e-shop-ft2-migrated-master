@@ -47,7 +47,7 @@ export default function Page() {
                             <TableCell key={idx}>
                                 <Dialog open={open} setOpen={() => setOpen(!open)}>
                                     <DialogTrigger>
-                                       {users[i]}
+                                       {[i]}
                                     </DialogTrigger>
                                     <DialogContent>
                                        {content.map((i, idx) => 

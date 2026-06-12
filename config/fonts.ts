@@ -1,18 +1,3 @@
-import { ABeeZee, Geist, Geist_Mono } from 'next/font/google';
-
-export const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-export const abeezee = ABeeZee({
-  subsets: ['latin'],
-  weight: ['400'],
-  style: ['normal'],
-  variable: '--font-abeezee',
-});
-
-export const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+export const geistSans = { variable: '--font-geist-sans', className: '' };
+export const abeezee = { variable: '--font-abeezee', className: '' };
+export const geistMono = { variable: '--font-geist-mono', className: '' };
